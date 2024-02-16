@@ -1,6 +1,7 @@
 import random
 import cProfile
 from datetime import datetime
+from typing import List
 
 STUDENTS_NUM = 70
 GROUP_NUM = 7
@@ -12,7 +13,7 @@ def rand_bool(probability=0.5):
 
 
 class PreferenceStrategy:
-    def get_preferences(self, preferences_num:int) -> list[int]:
+    def get_preferences(self, preferences_num:int) -> List[int]:
         raise NotImplementedError("Subclasses must implement this method")
 
 class IdenticalPreferenceStrategy(PreferenceStrategy):
@@ -39,7 +40,7 @@ class GaussianPreferenceStrategy(PreferenceStrategy):
 
         return preferences
 
-PREFERENCE_STRATEGY = GaussianPreferenceStrategy(0, GROUP_NUM-1, 2)
+PREFERENCE_STRATEGY = GaussianPreferenceStrategy(0, GROUP_NUM-1, 1)
 #PREFERENCE_STRATEGY = IdenticalPreferenceStrategy(0, GROUP_NUM)
 
 class Student:
@@ -118,7 +119,7 @@ class Assigment:
     def get_hash(self):
         return "#".join([str(a) for a in self.assignments])
 
-    def get_all_neighbours(self, distance=2):
+    def get_all_neighbours(self, distance=1):
         if distance not in [1, 2]:
             raise NotImplementedError("Only distance 1,2 is supported")
 
@@ -198,7 +199,7 @@ def get_best_random_assignment(cycles_num=1000):
 
 def main():        
     ATTEMPTS_NUM = 10
-    RANDOM_CYCLES_NUM = 1_000
+    RANDOM_CYCLES_NUM = 10_000
     best_assignment = None
     start_time = datetime.now()
     
