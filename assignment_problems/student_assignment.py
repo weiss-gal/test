@@ -118,9 +118,9 @@ class Assigment:
     def get_hash(self):
         return "#".join([str(a) for a in self.assignments])
 
-    def get_all_neighbours(self, distance=1):
-        if distance != 1:
-            raise NotImplementedError("Only distance 1 is supported")
+    def get_all_neighbours(self, distance=2):
+        if distance not in [1, 2]:
+            raise NotImplementedError("Only distance 1,2 is supported")
 
         neighbours_hash = set()
         for i in range(0, STUDENTS_NUM):
@@ -139,6 +139,14 @@ class Assigment:
 
                 neighbours_hash.add(h)
                 yield neighbour
+
+                if distance == 2:
+                    for n in neighbour.get_all_neighbours(1):
+                        h = n.get_hash()
+                        if h in neighbours_hash:
+                            continue
+                        neighbours_hash.add(h)
+                        yield n
 
     def get_best_neighbour(self):
         best_neighbour = None
